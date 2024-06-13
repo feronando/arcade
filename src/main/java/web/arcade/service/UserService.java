@@ -1,7 +1,8 @@
 package web.arcade.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.Lazy;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.arcade.domain.Profile;
@@ -19,6 +20,7 @@ public class UserService {
     private final ProfileRepository profileRepository;
     private final ProfileService profileService; // Inject ProfileService
 
+    @Lazy
     @Autowired
     public UserService(UserRepository userRepository, ProfileRepository profileRepository, ProfileService profileService) {
         this.userRepository = userRepository;

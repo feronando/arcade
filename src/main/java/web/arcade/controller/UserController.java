@@ -10,14 +10,19 @@ import web.arcade.service.UserService;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+        
     }
 
     @GetMapping("/all")
@@ -76,7 +81,9 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);
+        logger.info("Solicitação POST para obter todos os usuários foi chamada.");
         return ResponseEntity.ok(newUser);
+        
     }
 
     @DeleteMapping("/{userToBeDeleted}")

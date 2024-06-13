@@ -36,8 +36,8 @@ public class Profile {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "connections",
-            joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "connected_profile_id"))
+            joinColumns = @JoinColumn(name = "from_profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "to_profile_id"))
     private List<Profile> connections;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)

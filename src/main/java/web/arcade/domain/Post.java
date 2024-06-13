@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "posts")
 public class Post extends Content {
     @Column(name = "content")
     private String content;

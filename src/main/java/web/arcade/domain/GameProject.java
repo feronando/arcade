@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "game_projects")
 public class GameProject extends Content {
     @Column(name = "title")
     private String title;

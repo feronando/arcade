@@ -150,12 +150,13 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public Profile createProfile(Long userId) throws Exception {
+    public Profile createProfile(Long userId, Profile newprofile) throws Exception {
         User user = userService.findById(userId);
         if (user.getProfile() != null) {
             throw new Exception("User with ID " + userId + " already has a profile.");
         }
         Profile profile = new Profile();
+        profile = newprofile;
         profile.setUser(user);
         profileRepository.save(profile);
         user.setProfile(profile);
