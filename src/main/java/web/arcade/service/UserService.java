@@ -59,8 +59,8 @@ public class UserService {
     @Transactional
     public User createUser(User user) {
         User savedUser = userRepository.save(user);
-        Profile profile = new Profile();
-        savedUser.setProfile(new Profile());
+        //Profile profile = new Profile();
+        //savedUser.setProfile(new Profile());
         return userRepository.save(savedUser);
     }
 
@@ -69,7 +69,7 @@ public class UserService {
         Optional<Profile> profileOptional = profileRepository.findById(profileId);
         if (profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
-            if (profile.getUser().getUserId().equals(userId) || profile.getIsAdmin()) {
+            if (profile.getUserId().equals(userId) || profile.getIsAdmin()) {
                 userRepository.deleteById(userId);
                 profileService.deleteProfile(profileId);
             } else {
@@ -85,15 +85,23 @@ public class UserService {
         Optional<Profile> profileOptional = profileRepository.findById(profileId);
         if (profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
-            User userToUpdate = profile.getUser();
+            Long userId = profile.getUserId(); // Obter o ID do usuário do perfil
+
+            User userToUpdate = userRepository.findById(userId).orElseThrow(() ->
+                new Exception("User with ID " + userId + " not found.")
+            );
 
             if (!userToUpdate.getUserId().equals(updatedUser.getUserId())) {
                 throw new Exception("You can only update your own profile.");
             }
+
+            // Atualizar os campos do usuário
             userToUpdate.setName(updatedUser.getName());
             userToUpdate.setEmail(updatedUser.getEmail());
             userToUpdate.setUsername(updatedUser.getUsername());
             userToUpdate.setPassword(updatedUser.getPassword());
+
+            // Salvar o usuário atualizado
             userRepository.save(userToUpdate);
             return userToUpdate;
         } else {

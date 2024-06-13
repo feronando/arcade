@@ -152,14 +152,14 @@ public class ProfileService {
 
     public Profile createProfile(Long userId, Profile newprofile) throws Exception {
         User user = userService.findById(userId);
-        if (user.getProfile() != null) {
+        if (user.getProfileId() != null) {
             throw new Exception("User with ID " + userId + " already has a profile.");
         }
         Profile profile = new Profile();
         profile = newprofile;
-        profile.setUser(user);
+        profile.setUserId(user.getUserId());
         profileRepository.save(profile);
-        user.setProfile(profile);
+        user.setProfileId(profile.getProfileId());
         userService.saveUser(user);
         return profile;
     }
@@ -191,7 +191,7 @@ public class ProfileService {
         profile.getFavoritedProjects().clear();
         profile.getAppliedToProjects().clear();
 
-        userService.deleteUser(profileId, profile.getUser().getUserId());
+        userService.deleteUser(profileId, profile.getUserId());
 
         profileRepository.delete(profile);
     }

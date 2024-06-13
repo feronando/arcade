@@ -29,9 +29,8 @@ public class Profile {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -122,12 +121,12 @@ public class Profile {
         this.isAdmin = isAdmin;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public List<Profile> getConnections() {

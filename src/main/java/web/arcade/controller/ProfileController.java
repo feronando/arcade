@@ -112,8 +112,8 @@ public class ProfileController {
 	
 	@PostMapping("/connectProfiles")
 	public ResponseEntity<Void> connectProfiles(@RequestBody ConnectProfileRequest request) {
-	    Long profileId1 = request.getProfileId1();
-	    Long profileId2 = request.getProfileId2();
+	    Long profileId1 = request.getProfileId1AsLong();
+	    Long profileId2 = request.getProfileId2AsLong();
 	    try {
 	        profileService.connectProfiles(profileId1, profileId2);
 	        return ResponseEntity.ok().build();
