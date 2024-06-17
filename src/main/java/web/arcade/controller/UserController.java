@@ -25,19 +25,19 @@ public class UserController {
         
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all")//OK
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}")//OK
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         Optional<User> optionalTag = Optional.of(userService.findById(userId));
         return optionalTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/findByName/{name}")
+    @GetMapping("/findByName/{name}")//OK
     public ResponseEntity<List<User>> getUserByName(@PathVariable String name) {
         List<User> users = userService.findByName(name);
         if (users.isEmpty()) {
@@ -46,21 +46,21 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/findByEmail/{email}")
+    @GetMapping("/findByEmail/{email}")//OK
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         Optional<User> optionalTag = Optional.of(userService.findByEmail(email));
         return optionalTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/findByUsername/{username}")
+    @GetMapping("/findByUsername/{username}")//OK
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         Optional<User> optionalTag = Optional.of(userService.findByUsername(username));
         return optionalTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/findByNameContaining/{name}")
+    @GetMapping("/findByNameContaining/{name}")//OK
     public ResponseEntity<List<User>> getUserByNameContaining(@PathVariable String name) {
         List<User> users = userService.findByNameContaining(name);
         if (users.isEmpty()) {
@@ -69,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/findByUsernameContaining/{username}")
+    @GetMapping("/findByUsernameContaining/{username}")//OK
     public ResponseEntity<List<User>> getUserByUsernameContaining(@PathVariable String username) {
         List<User> users = userService.findByUsernameContaining(username);
         if (users.isEmpty()) {
@@ -78,7 +78,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create")//OK
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);
         logger.info("Solicitação POST para obter todos os usuários foi chamada.");
@@ -86,7 +86,7 @@ public class UserController {
         
     }
 
-    @DeleteMapping("/{userToBeDeleted}")
+    @DeleteMapping("/{userToBeDeleted}")//OK
     public ResponseEntity deleteUser(@PathVariable Long userToBeDeleted, @RequestParam Long profileId) {
         try {
             userService.deleteUser(profileId, userToBeDeleted);
@@ -96,7 +96,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{profileId}")
+    @PutMapping("/{profileId}")//OK
     public ResponseEntity updateUser(@PathVariable Long profileId, @RequestBody User updatedUser) throws Exception {
         try {
             User updated = userService.updateUserByProfile(profileId, updatedUser);

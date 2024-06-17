@@ -29,14 +29,15 @@ public class Profile {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "connections",
-            joinColumns = @JoinColumn(name = "from_profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "to_profile_id"))
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "connected_profile_id"))
     private List<Profile> connections;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
@@ -121,12 +122,12 @@ public class Profile {
         this.isAdmin = isAdmin;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Profile> getConnections() {

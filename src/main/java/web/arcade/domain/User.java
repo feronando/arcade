@@ -22,10 +22,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private Profile profile;
-    @Column(name = "profile_id")
-    private Long profileId;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
 
     public Long getUserId() {
         return userId;
@@ -67,21 +65,11 @@ public class User {
         this.password = password;
     }
 
-	public Long getProfileId() {
-		return profileId;
-	}
-
-	public void setProfileId(Long profileId) {
-		this.profileId = profileId;
-	}
-    
-    
-
-    /*public Profile getProfile() {
+    public Profile getProfile() {
         return profile;
     }
 
     public void setProfile(Profile profile) {
         this.profile = profile;
-    }*/
+    }
 }

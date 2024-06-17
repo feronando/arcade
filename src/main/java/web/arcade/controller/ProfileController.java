@@ -27,12 +27,12 @@ public class ProfileController {
         this.profileService = profileService;
     }
 	
-	@GetMapping("/all")
+	@GetMapping("/all")//OK
     public ResponseEntity<List<Profile>> getAllProfiles() {
         return ResponseEntity.ok(profileService.findAll());
     }
 	
-	@GetMapping("/{profileID}")
+	@GetMapping("/{profileID}")//OK
     public ResponseEntity<Profile> getProfileById(@PathVariable Long profileID) {
 		Optional<Profile> optionalTag = java.util.Optional.empty();
 		try {
@@ -45,7 +45,7 @@ public class ProfileController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 	
-	@GetMapping("/admins")
+	@GetMapping("/admins")//OK
     public ResponseEntity<List<Profile>> getAdminsProfiles() {
         return ResponseEntity.ok(profileService.listAdmins());
     }
@@ -188,7 +188,7 @@ public class ProfileController {
 	    }
 	}
 
-	@PostMapping("/applyToProject/{profileId}/{gameProjectId}")
+	@PostMapping("/applyToProject/{profileId}/{gameProjectId}")//
 	public ResponseEntity<Void> applyToProject(@PathVariable Long profileId, @PathVariable Long gameProjectId) {
 	    try {
 	        profileService.applyToProject(profileId, gameProjectId);
@@ -208,17 +208,30 @@ public class ProfileController {
 	    }
 	}
     
-    @PostMapping("/create/{userId}")
+    /*@PostMapping("/create/{userId}")
     public ResponseEntity<Profile> createProfile(@PathVariable Long userId,@RequestBody Profile profile) {
         try {
-            Profile newProfile = profileService.createProfile(userId, profile);
+            Profile newProfile = profileService.createProfile(userId);
             return ResponseEntity.ok(newProfile);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
+	@PostMapping("/create/{userId}")//OK se deve passar a informação de ser ADMIN no Body da requisição
+	public ResponseEntity<Profile> createProfile(@PathVariable Long userId, @RequestBody Profile profile) {
+	    try {
+	        // Verifica se isAdmin está presente no corpo da requisição
+	        Boolean isAdmin = profile.getIsAdmin(); // Supondo que getIsAdmin() retorna um Boolean
 
-    @DeleteMapping("/{profileToBeDeleted}")
+	        // Cria um novo perfil
+	        Profile newProfile = profileService.createProfile(userId, isAdmin);
+	        return ResponseEntity.ok(newProfile);
+	    } catch (Exception e) {
+	    	return ResponseEntity.notFound().build();
+	    }
+	}
+
+    @DeleteMapping("/{profileToBeDeleted}")//OK
     public ResponseEntity deleteProfile(@PathVariable Long profileToBeDeleted, @RequestParam Long profileId) {
         try {
             profileService.deleteProfile(profileId);
@@ -228,7 +241,7 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("/{profileId}")
+    @PutMapping("/{profileId}")//OK
     public ResponseEntity updateProfile(@PathVariable Long profileId, @RequestBody Profile updatedProfile) throws Exception {
         try {
             Profile updated = profileService.updateProfile(updatedProfile);

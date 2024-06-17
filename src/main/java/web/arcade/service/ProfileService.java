@@ -139,6 +139,8 @@ public class ProfileService {
         GameProject project = gameProjectRepository.findById(gameProjectId).orElseThrow(() -> new Exception("Project with ID " + gameProjectId + " not found."));
         if (!profile.getAppliedToProjects().contains(project)) {
             profile.getAppliedToProjects().add(project);
+            project.getApplicants().add(profile);
+            gameProjectRepository.save(project);
             profileRepository.save(profile);
         }
     }
@@ -150,17 +152,37 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public Profile createProfile(Long userId, Profile newprofile) throws Exception {
+   /* public Profile createProfile(Long userId) throws Exception {
         User user = userService.findById(userId);
-        if (user.getProfileId() != null) {
+        if (user.getProfile() != null) {
             throw new Exception("User with ID " + userId + " already has a profile.");
         }
         Profile profile = new Profile();
-        profile = newprofile;
-        profile.setUserId(user.getUserId());
+        profile.setUser(user);
         profileRepository.save(profile);
-        user.setProfileId(profile.getProfileId());
+        user.setProfile(profile);
         userService.saveUser(user);
+        return profile;
+    }*/
+    
+    public Profile createProfile(Long userId, Boolean isAdmin) throws Exception {
+        User user = userService.findById(userId);
+        if (user.getProfile() != null) {
+            throw new Exception("User with ID " + userId + " already has a profile.");
+        }
+
+        Profile profile = new Profile();
+        profile.setUser(user);
+        profile.setIsAdmin(isAdmin); // Define isAdmin no perfil
+
+        profileRepository.save(profile);
+
+        // Atualiza o perfil no usuário apenas se isAdmin for true
+        if (isAdmin) {
+            user.setProfile(profile);
+            userService.saveUser(user);
+        }
+
         return profile;
     }
 
@@ -191,7 +213,7 @@ public class ProfileService {
         profile.getFavoritedProjects().clear();
         profile.getAppliedToProjects().clear();
 
-        userService.deleteUser(profileId, profile.getUserId());
+        userService.deleteUser(profileId, profile.getUser().getUserId());
 
         profileRepository.delete(profile);
     }

@@ -22,17 +22,17 @@ public class GameProjectController {
         this.gameProjectService = gameProjectService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all")//OK
     public ResponseEntity<List<GameProject>> getAllGameProjects() {
         return ResponseEntity.ok(gameProjectService.findAll());
     }
 
-    @GetMapping("/{gameProjectId}")
+    @GetMapping("/{gameProjectId}")//OK
     public ResponseEntity<GameProject> getGameProjectById(@PathVariable Long gameProjectId) {
         return ResponseEntity.ok(gameProjectService.findById(gameProjectId));
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search")//OK
     public ResponseEntity<List<GameProject>> searchGameProjects(@RequestParam String title) {
         return ResponseEntity.ok(gameProjectService.findByTitleContaining(title));
     }
@@ -116,8 +116,11 @@ public class GameProjectController {
             return ResponseEntity.badRequest().body("Error updating project: " + e.getMessage());
         }
     }
-
-    @PutMapping("/tags/{requestingProfileId}/{gameProjectId}")
+/*[2m2024-06-16T21:21:00.105-03:00[0;39m [33m WARN[0;39m [35m11684[0;39m [2m---[0;39m [2m[arcade] [nio-8080-exec-4][0;39m [2m[0;39m[36mo.h.engine.jdbc.spi.SqlExceptionHelper  [0;39m [2m:[0;39m SQL Error: 23502, SQLState: 23502
+[2m2024-06-16T21:21:00.106-03:00[0;39m [31mERROR[0;39m [35m11684[0;39m [2m---[0;39m [2m[arcade] [nio-8080-exec-4][0;39m [2m[0;39m[36mo.h.engine.jdbc.spi.SqlExceptionHelper  [0;39m [2m:[0;39m NULL not allowed for column "POST_CONTENT_ID"; SQL statement:
+insert into content_tags (game_project_content_id,tags_tag_id) values (?,?) [23502-224]
+*/
+    @PutMapping("/tags/{requestingProfileId}/{gameProjectId}")//Problema {}
     public ResponseEntity addTagsToProject(@PathVariable Long gameProjectId, @RequestBody List<Tag> tagsToAdd, @PathVariable Long requestingProfileId) {
         try {
             gameProjectService.addTagsToGameProject(gameProjectId, tagsToAdd, requestingProfileId);

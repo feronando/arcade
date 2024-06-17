@@ -7,12 +7,13 @@ import web.arcade.domain.Profile;
 import java.util.Date;
 
 @Entity
-@Table(name = "connections", uniqueConstraints = @UniqueConstraint(columnNames = {"from_profile_id", "to_profile_id"}))
+@Table(name = "connections", uniqueConstraints = @UniqueConstraint(columnNames = {"profile_id", "connected_profile_id"}))
 public class Connection {
     @Id
     @Column(name = "connection_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long connectionId;
+
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

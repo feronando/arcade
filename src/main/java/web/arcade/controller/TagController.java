@@ -20,27 +20,27 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all")//OK
     public ResponseEntity<List<Tag>> getAllTags() {
         return ResponseEntity.ok(tagService.findAll());
     }
 
-    @GetMapping("/{tagId}")
+    @GetMapping("/{tagId}")//OK
     public ResponseEntity<Tag> getTagById(@PathVariable Long tagId) {
         Optional<Tag> optionalTag = Optional.of(tagService.findById(tagId));
         return optionalTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/findByName/{name}")
+    @GetMapping("/findByName/{name}")//OK
     public ResponseEntity<Tag> getTagByName(@PathVariable String name) {
         Optional<Tag> optionalTag = Optional.of(tagService.findByName(name));
         return optionalTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/")
-    public ResponseEntity createTag(@RequestBody Tag tag, Long profileId) {
+    @PostMapping("/create/{profileId}")//OK
+    public ResponseEntity createTag(@RequestBody Tag tag, @PathVariable Long profileId) {
         if (tag.getName() == null || tag.getName().isEmpty()) {
             return ResponseEntity.badRequest().body("Tag name cannot be empty");
         }
@@ -52,7 +52,7 @@ public class TagController {
         }
     }
 
-    @DeleteMapping("/{tagId}")
+    @DeleteMapping("/{tagId}")//OK
     public ResponseEntity deleteTag(@PathVariable Long tagId, @RequestParam Long profileId) {
         try {
             tagService.deleteTag(tagId, profileId);
@@ -62,7 +62,7 @@ public class TagController {
         }
     }
 
-    @PutMapping("/{tagId}")
+    @PutMapping("/{tagId}")//OK
     public ResponseEntity updateTagName(@PathVariable Long tagId, @RequestParam String newTagName, Long profileId) {
         if (newTagName == null || newTagName.isEmpty()) {
             return ResponseEntity.badRequest().body("Tag name cannot be empty");

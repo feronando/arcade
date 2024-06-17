@@ -69,7 +69,7 @@ public class UserService {
         Optional<Profile> profileOptional = profileRepository.findById(profileId);
         if (profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
-            if (profile.getUserId().equals(userId) || profile.getIsAdmin()) {
+            if (profile.getUser().getUserId().equals(userId) || profile.getIsAdmin()) {
                 userRepository.deleteById(userId);
                 profileService.deleteProfile(profileId);
             } else {
@@ -85,23 +85,15 @@ public class UserService {
         Optional<Profile> profileOptional = profileRepository.findById(profileId);
         if (profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
-            Long userId = profile.getUserId(); // Obter o ID do usuário do perfil
-
-            User userToUpdate = userRepository.findById(userId).orElseThrow(() ->
-                new Exception("User with ID " + userId + " not found.")
-            );
+            User userToUpdate = profile.getUser();
 
             if (!userToUpdate.getUserId().equals(updatedUser.getUserId())) {
                 throw new Exception("You can only update your own profile.");
             }
-
-            // Atualizar os campos do usuário
             userToUpdate.setName(updatedUser.getName());
             userToUpdate.setEmail(updatedUser.getEmail());
             userToUpdate.setUsername(updatedUser.getUsername());
             userToUpdate.setPassword(updatedUser.getPassword());
-
-            // Salvar o usuário atualizado
             userRepository.save(userToUpdate);
             return userToUpdate;
         } else {
