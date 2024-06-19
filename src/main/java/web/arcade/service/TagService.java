@@ -32,7 +32,12 @@ public class TagService {
     }
 
     private boolean isAdmin(Long profileId) {
-        Profile profile = profileService.findById(profileId);
+        Profile profile = new Profile();
+        try {
+            profile = profileService.findById(profileId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return profile != null && profile.getIsAdmin();
     }
 
